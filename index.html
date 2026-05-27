@@ -72,14 +72,13 @@
                 <button @click="currentTab = 'map'" :class="currentTab === 'map' ? 'bg-primaryBlue text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition">
                     <i class="fa-solid fa-location-dot w-5"></i> แผนที่ & หน้าร้าน
                 </button>
+
+                <button x-show="isAdmin" @click="logout()" class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded-lg text-sm font-medium transition mt-4 border border-red-900/30">
+                    <i class="fa-solid fa-right-from-bracket w-5"></i> ออกจากระบบ
+                </button>
             </nav>
 
             <div class="p-4 border-t border-gray-800/50">
-                <template x-if="isAdmin">
-                    <button @click="logout()" class="w-full flex items-center justify-center gap-2 bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-lg text-xs font-medium transition">
-                        <i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ (โหมดลูกค้า)
-                    </button>
-                </template>
                 <div x-show="!isAdmin" class="w-full h-16 bg-gray-900/40 rounded-lg flex items-center justify-center border border-gray-800/60 text-primaryBlue/40">
                     <i class="fa-solid fa-bicycle text-2xl"></i>
                 </div>
@@ -106,7 +105,7 @@
                         </button>
                         
                         <div x-show="showNotification" @click.outside="showNotification = false" class="absolute right-0 mt-2 w-72 bg-panelDark border border-gray-800 rounded-xl shadow-2xl p-4 z-50">
-                            <h4 class="text-xs font-semibold text-gray-300 mb-2 border-b border-gray-800 pb-2">สินค้าใกล้หมดสต็อก (&le; 4 ชิ้น)</h4>
+                            <h4 class="text-xs font-semibold text-gray-300 mb-2 border-b border-gray-800 pb-2">สินค้าใกล้หมดสต็อก (≤ 4 ชิ้น)</h4>
                             <div class="space-y-2 max-h-48 overflow-y-auto">
                                 <template x-for="p in products.filter(prod => prod.stock <= 4)">
                                     <div class="flex justify-between items-center text-xs bg-cardDark p-2 rounded border border-red-900/30">
@@ -197,7 +196,7 @@
                         <div class="xl:col-span-3 bg-panelDark p-5 rounded-xl border border-gray-800">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-sm font-semibold tracking-wide text-gray-200">🔥 สินค้าขายดียอดนิยม</h2>
-                                <button @click="currentTab = 'products'" class="text-xs text-primaryBlue hover:underline">ดูสินค้าทั้งหมด &rsaquo;</button>
+                                <button @click="currentTab = 'products'" class="text-xs text-primaryBlue hover:underline">ดูสินค้าทั้งหมด ›</button>
                             </div>
                             
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
@@ -303,9 +302,9 @@
                                             <td class="p-3 text-green-400 font-mono" x-text="p.price"></td>
                                             <td class="p-3">
                                                 <div class="flex items-center justify-center gap-2">
-                                                    <button @click="if(p.stock > 0) p.stock--" class="w-6 h-6 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center font-bold text-gray-300">-</button>
+                                                    <button @click="if(p.stock > 0) { p.stock--; saveToStorage(); }" class="w-6 h-6 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center font-bold text-gray-300">-</button>
                                                     <span class="w-6 text-center font-mono font-bold text-sm" :class="p.stock <= 4 ? 'text-red-400' : 'text-white'" x-text="p.stock"></span>
-                                                    <button @click="p.stock++" class="w-6 h-6 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center font-bold text-gray-300">+</button>
+                                                    <button @click="p.stock++; saveToStorage();" class="w-6 h-6 bg-gray-800 hover:bg-gray-700 rounded flex items-center justify-center font-bold text-gray-300">+</button>
                                                 </div>
                                             </td>
                                             <td class="p-3 text-center">
@@ -365,7 +364,7 @@
                                     
                                     <button x-show="isAdmin" @click="openImageModal('storefront', index)" 
                                             class="absolute inset-0 bg-black/60 flex items-center justify-center text-white opacity-0 group-hover/store:opacity-100 transition backdrop-blur-sm">
-                                        <span class="text-xs font-bold bg-primaryBlue px-3 py-1.5 rounded-lg"><i class="fa-regular fa-edit mr-1"></i> เปลี่ยนรูปร้านที่ <span x-text="index+1"></span></span>
+                                        <span class="text-xs font-bold bg-primaryBlue px-3 py-1.5 rounded-lg"><i class="fa-regular fa-edit mr-1"></i> เปลี่ยนรูป</span>
                                     </button>
                                 </div>
                             </template>
@@ -470,13 +469,12 @@
                 
                 // รูปภาพต่างๆ
                 heroBannerUrl: 'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&q=80',
-                mapImage: '', // ว่างไว้ให้ใส่ทีหลัง
-                storefrontImages: ['', '', '', '', ''], // จองที่ไว้ 5 รูป
+                mapImage: '', 
+                storefrontImages: ['', '', '', '', ''], 
 
-                // ระบบตั้งค่ารูปภาพอเนกประสงค์
                 showImageModal: false,
-                imageTargetType: '', // 'banner', 'map', 'storefront'
-                imageTargetIndex: null, // ตำแหน่งรูปถ้าระบุเป็น array
+                imageTargetType: '', 
+                imageTargetIndex: null, 
                 tempImageUrl: '',
                 imageModalTitle: '',
                 
@@ -492,6 +490,30 @@
                 
                 get lowStockCount() { return this.products.filter(p => p.stock <= 4).length; },
                 
+                // ทำงานทันทีตอนโหลดหน้าเว็บ
+                init() {
+                    // โหลดข้อมูลที่เคยบันทึกไว้ใน Local Storage มาแสดง
+                    const savedData = localStorage.getItem('bikeForYouData');
+                    if (savedData) {
+                        const parsed = JSON.parse(savedData);
+                        if (parsed.heroBannerUrl) this.heroBannerUrl = parsed.heroBannerUrl;
+                        if (parsed.mapImage !== undefined) this.mapImage = parsed.mapImage;
+                        if (parsed.storefrontImages) this.storefrontImages = parsed.storefrontImages;
+                        if (parsed.products) this.products = parsed.products;
+                    }
+                },
+
+                // ฟังก์ชันเซฟข้อมูลลง Local Storage ป้องกันการรีเฟรชแล้วหาย
+                saveToStorage() {
+                    const dataToSave = {
+                        heroBannerUrl: this.heroBannerUrl,
+                        mapImage: this.mapImage,
+                        storefrontImages: this.storefrontImages,
+                        products: this.products
+                    };
+                    localStorage.setItem('bikeForYouData', JSON.stringify(dataToSave));
+                },
+
                 checkLogin() {
                     if(this.passwordInput === '112506') {
                         this.isAdmin = true;
@@ -504,33 +526,37 @@
                 },
                 logout() {
                     this.isAdmin = false;
-                    this.currentTab = 'home';
+                    this.currentTab = 'home'; // เด้งกลับหน้าโหมดลูกค้าปกติ
                 },
                 
-                // ฟังก์ชันแปลงลิงก์ Google Drive
+                // ฟังก์ชันแปลงลิงก์ Google Drive เป็นภาพ Thumbnail (ทะลุระบบบล็อกใหม่)
                 parseDriveLink(url) {
                     if(!url) return '';
                     let finalUrl = url;
                     if (finalUrl.includes('drive.google.com/file/d/')) {
                         const match = finalUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
                         if (match && match[1]) {
-finalUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+                            finalUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
                         }
                     }
                     return finalUrl;
                 },
 
-                // บันทึกสินค้า (ผ่านการแปลงลิงก์รูปภาพด้วย)
+                // บันทึกสินค้า พร้อมแปลงลิงก์ภาพ และเซฟเข้า Local Storage
                 saveProduct() {
                     if(this.editingProduct.image) {
                         this.editingProduct.image = this.parseDriveLink(this.editingProduct.image);
                     }
                     let index = this.products.findIndex(p => p.id === this.editingProduct.id);
-                    if(index !== -1) this.products[index] = this.editingProduct;
+                    if(index !== -1) {
+                        this.products[index] = this.editingProduct;
+                    }
                     this.editingProduct = null;
+                    
+                    // สั่งเซฟข้อมูลหลังจากอัปเดตสต๊อกหรือแก้รูป
+                    this.saveToStorage(); 
                 },
 
-                // เปิด Modal เปลี่ยนรูปสำหรับส่วนต่างๆ (ไม่ใช่สินค้า)
                 openImageModal(type, index = null) {
                     this.imageTargetType = type;
                     this.imageTargetIndex = index;
@@ -549,7 +575,7 @@ finalUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
                     }
                 },
 
-                // บันทึกรูปภาพลงส่วนที่เลือก
+                // บันทึกรูปลงแบนเนอร์/แผนที่/หน้าร้าน พร้อมเซฟเข้า Local Storage
                 saveImageTarget() {
                     const finalUrl = this.parseDriveLink(this.tempImageUrl);
                     
@@ -562,6 +588,9 @@ finalUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
                     }
                     
                     this.showImageModal = false;
+                    
+                    // สั่งเซฟข้อมูลหลังจากเพิ่มรูปลงหน้าเว็บเสร็จ
+                    this.saveToStorage();
                 }
             }));
         });
