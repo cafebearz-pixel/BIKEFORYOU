@@ -157,32 +157,68 @@
 
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center text-lg"><i class="fa-solid fa-box"></i></div>
+                            <div class="w-10 h-10 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-box"></i></div>
                             <div>
                                 <p class="text-gray-400 text-[11px]">1. สินค้าทั้งหมด</p>
                                 <p class="text-lg font-bold" x-text="products.length + ' รายการ'"></p>
                             </div>
                         </div>
                         <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center text-lg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="w-10 h-10 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-triangle-exclamation"></i></div>
                             <div>
                                 <p class="text-gray-400 text-[11px]">2. ใกล้หมดสต๊อค</p>
                                 <p class="text-lg font-bold text-red-400" x-text="lowStockCount + ' รายการ'"></p>
                             </div>
                         </div>
                         <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4 cursor-pointer hover:bg-gray-800/50 transition" @click="currentTab = 'repair'">
-                            <div class="w-10 h-10 rounded-lg bg-yellow-600/20 text-yellow-400 flex items-center justify-center text-lg"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                            <div class="w-10 h-10 rounded-lg bg-yellow-600/20 text-yellow-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                             <div>
                                 <p class="text-gray-400 text-[11px]">3. กำลังซ่อม</p>
                                 <p class="text-lg font-bold text-yellow-400" x-text="activeRepairCount + ' คัน'"></p>
                             </div>
                         </div>
                         <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4 cursor-pointer hover:bg-gray-800/50 transition" @click="currentTab = 'repair'">
-                            <div class="w-10 h-10 rounded-lg bg-green-600/20 text-green-400 flex items-center justify-center text-lg"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="w-10 h-10 rounded-lg bg-green-600/20 text-green-400 flex items-center justify-center text-lg shrink-0"><i class="fa-solid fa-circle-check"></i></div>
                             <div>
                                 <p class="text-gray-400 text-[11px]">4. ซ่อมเสร็จแล้ว</p>
                                 <p class="text-lg font-bold text-green-400" x-text="doneRepairCount + ' คัน'"></p>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-panelDark p-5 rounded-xl border border-gray-800">
+                            <h3 class="text-sm font-bold text-white mb-3"><i class="fa-solid fa-list-ol text-primaryBlue mr-2"></i>วิธีเข้ามาใช้บริการร้าน Bike For You</h3>
+                            <ol class="text-xs text-gray-400 space-y-2 list-decimal list-inside">
+                                <li>ติดต่อสอบถามอาการเบื้องต้นผ่านเพจ หรือโทรหาช่างพล</li>
+                                <li>นำรถจักรยานเข้ามาที่ร้านตามพิกัดแผนที่</li>
+                                <li>ช่างประเมินอาการ แจ้งราคา และลงคิวซ่อมให้ในระบบ</li>
+                                <li>ลูกค้ารอรับรถ หรือฝากรถไว้สามารถติดตามสถานะผ่านเว็บได้เลย</li>
+                            </ol>
+                        </div>
+                        <div class="bg-panelDark p-5 rounded-xl border border-gray-800 flex flex-col justify-center items-center text-center">
+                            <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-circle-info text-primaryBlue mr-2"></i>วิธีดูขนาดยางรถจักรยาน</h3>
+                            <p class="text-xs text-gray-400 mb-4">คลิกดูคู่มือการอ่านขนาดยางที่ถูกต้อง เพื่อสั่งซื้ออะไหล่หรือแจ้งช่างได้ตรงรุ่น</p>
+                            <button @click="showTireSizeModal = true" class="bg-primaryBlue hover:bg-blue-600 text-white px-6 py-2 rounded-lg text-xs font-medium transition shadow-lg flex items-center gap-2">
+                                <i class="fa-regular fa-image"></i> ดูรูปวิธีอ่านขนาดยาง
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-panelDark p-4 rounded-xl border border-gray-800 relative group w-full max-w-sm mx-auto">
+                        <div class="w-full aspect-square bg-cardDark rounded-lg overflow-hidden relative border border-gray-700">
+                            <template x-if="promoImage">
+                                <img :src="promoImage" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!promoImage">
+                                <div class="w-full h-full flex flex-col items-center justify-center text-gray-600">
+                                    <i class="fa-regular fa-image text-4xl mb-2 text-gray-700"></i>
+                                    <p class="text-xs">พื้นที่รูปโปรโมท 1:1</p>
+                                </div>
+                            </template>
+                            <button x-show="isAdmin" @click="openImageModal('promo')" class="absolute top-2 right-2 bg-black/70 hover:bg-primaryBlue text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition z-10 text-xs flex items-center gap-1 backdrop-blur-sm">
+                                <i class="fa-solid fa-edit"></i> เปลี่ยนรูป
+                            </button>
                         </div>
                     </div>
 
@@ -203,9 +239,18 @@
                                 <button @click="currentTab = 'products'" class="text-xs text-primaryBlue hover:underline">ดูสินค้าทั้งหมด ›</button>
                             </div>
                             
-                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                                <template x-for="p in products.slice(0, 5)">
-                                    <div class="bg-cardDark p-3 rounded-lg flex flex-col border border-gray-800 hover:border-gray-700 transition">
+                            <div class="flex overflow-x-auto gap-4 hide-scroll snap-x scroll-smooth pb-2" 
+                                 x-ref="bestSellerContainer" 
+                                 x-init="setInterval(() => { 
+                                     if($refs.bestSellerContainer.scrollLeft + $refs.bestSellerContainer.clientWidth >= $refs.bestSellerContainer.scrollWidth - 10) {
+                                         $refs.bestSellerContainer.scrollTo({ left: 0, behavior: 'smooth' });
+                                     } else {
+                                         $refs.bestSellerContainer.scrollBy({ left: 200, behavior: 'smooth' });
+                                     }
+                                 }, 7000)">
+                                
+                                <template x-for="p in products.slice(0, 10)">
+                                    <div class="min-w-[140px] max-w-[160px] bg-cardDark p-3 rounded-lg flex flex-col border border-gray-800 hover:border-gray-700 transition snap-center shrink-0">
                                         <div class="w-full aspect-square bg-gray-900 rounded mb-2 overflow-hidden flex items-center justify-center relative">
                                             <template x-if="p.image">
                                                 <img :src="p.image" class="w-full h-full object-cover">
@@ -214,10 +259,11 @@
                                                 <i class="fa-solid fa-box-open text-2xl text-gray-600"></i>
                                             </template>
                                         </div>
-                                        <p class="text-[11px] text-gray-300 font-medium line-clamp-2" x-text="p.name"></p>
+                                        <p class="text-[11px] text-gray-300 font-medium line-clamp-2 h-8" x-text="p.name"></p>
                                         <div class="mt-auto pt-2">
                                             <p class="text-sm font-bold text-white mb-1.5" x-text="'฿' + p.price"></p>
-                                            <button @click="alert('สั่งซื้อ ' + p.name + ' สำเร็จ!')" class="w-full bg-primaryBlue hover:bg-blue-600 text-white text-[10px] py-1.5 rounded transition">
+                                            <button @click="if(p.shopeeLink) window.open(p.shopeeLink, '_blank'); else alert('ขออภัย ยังไม่มีลิงก์สั่งซื้อสำหรับสินค้านี้');" 
+                                                    class="w-full bg-primaryBlue hover:bg-blue-600 text-white text-[10px] py-1.5 rounded transition">
                                                 <i class="fa-solid fa-cart-plus mr-1"></i> สั่งซื้อ
                                             </button>
                                         </div>
@@ -247,12 +293,12 @@
                         <template x-for="p in products.filter(prod => prod.name.toLowerCase().includes(searchQuery.toLowerCase()))">
                             <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex flex-col justify-between hover:border-gray-600 transition">
                                 <div>
-                                    <div class="w-full aspect-square bg-cardDark rounded-lg flex items-center justify-center overflow-hidden mb-3">
+                                    <div class="w-full aspect-square bg-cardDark rounded-lg flex items-center justify-center overflow-hidden mb-3 border border-gray-800">
                                         <template x-if="p.image">
                                             <img :src="p.image" class="w-full h-full object-cover">
                                         </template>
                                         <template x-if="!p.image">
-                                            <i class="fa-solid fa-box-open text-3xl text-gray-600"></i>
+                                            <i class="fa-solid fa-box-open text-3xl text-gray-700"></i>
                                         </template>
                                     </div>
                                     <span class="bg-blue-900/40 text-blue-400 text-[9px] font-bold px-2 py-0.5 rounded" x-text="p.type"></span>
@@ -263,8 +309,9 @@
                                         <span class="text-sm font-bold text-white" x-text="'฿' + p.price"></span>
                                         <span class="text-[10px]" :class="p.stock > 0 ? 'text-gray-500' : 'text-red-500'" x-text="p.stock > 0 ? 'มีสินค้า' : 'หมด'"></span>
                                     </div>
-                                    <button @click="alert('เพิ่มสินค้าลงตะกร้าแล้ว')" :disabled="p.stock == 0" class="w-full bg-primaryBlue disabled:bg-gray-800 text-white text-xs py-2 rounded-lg font-medium transition">
-                                        สั่งซื้อ
+                                    <button @click="if(p.shopeeLink) window.open(p.shopeeLink, '_blank'); else alert('ขออภัย ยังไม่มีลิงก์สั่งซื้อสำหรับสินค้านี้');" 
+                                            :disabled="p.stock == 0" class="w-full bg-primaryBlue disabled:bg-gray-800 text-white text-xs py-2 rounded-lg font-medium transition flex justify-center items-center gap-1">
+                                        <i class="fa-solid fa-cart-shopping"></i> สั่งซื้อ
                                     </button>
                                 </div>
                             </div>
@@ -273,13 +320,11 @@
                 </div>
 
                 <div x-show="currentTab === 'repair'" class="space-y-4" x-transition.opacity style="display: none;">
-                    
                     <div class="flex justify-between items-center bg-panelDark p-4 rounded-xl border border-gray-800">
                         <div>
                             <h2 class="text-base font-bold text-white"><i class="fa-solid fa-screwdriver-wrench text-orange-400 mr-2"></i>ติดตามสถานะงานซ่อม</h2>
                             <p class="text-[10px] text-gray-400 mt-1">อัปเดตสถานะแบบ Real-time</p>
                         </div>
-                        
                         <button x-show="isAdmin" @click="openAddRepairModal()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-xs font-medium transition shadow-lg flex items-center gap-2">
                             <i class="fa-solid fa-plus"></i> เพิ่มคิวลูกค้า
                         </button>
@@ -311,7 +356,6 @@
 
                                 <div class="relative w-full max-w-2xl mx-auto mt-2">
                                     <div class="flex items-center justify-between relative z-10">
-                                        
                                         <div class="flex flex-col items-center w-1/4">
                                             <button @click="if(isAdmin) updateRepairStatus(r.id, 1)" :class="r.status >= 1 ? 'bg-primaryBlue text-white shadow-[0_0_10px_rgba(26,107,255,0.5)] border-primaryBlue' : 'bg-gray-800 text-gray-500 border-gray-700'" class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border-2 z-10 relative">
                                                 <i class="fa-solid fa-clipboard-list"></i>
@@ -399,7 +443,10 @@
                                                     <template x-if="!p.image"><i class="fa-solid fa-image text-gray-700"></i></template>
                                                 </div>
                                             </td>
-                                            <td class="p-3 font-medium text-white" x-text="p.name"></td>
+                                            <td class="p-3 font-medium text-white">
+                                                <span x-text="p.name"></span>
+                                                <i x-show="p.shopeeLink" class="fa-solid fa-bag-shopping text-orange-500 ml-1" title="มีลิงก์ Shopee"></i>
+                                            </td>
                                             <td class="p-3 text-gray-400" x-text="p.type"></td>
                                             <td class="p-3 text-red-400 font-mono" x-text="p.cost"></td>
                                             <td class="p-3 text-green-400 font-mono" x-text="p.price"></td>
@@ -452,7 +499,6 @@
 
                     <div class="bg-panelDark p-6 rounded-xl border border-gray-800">
                         <h3 class="text-sm font-semibold mb-4 text-gray-300"><i class="fa-solid fa-store mr-2 text-primaryBlue"></i>บรรยากาศหน้าร้าน</h3>
-                        
                         <div class="flex overflow-x-auto gap-4 pb-4 hide-scroll snap-x">
                             <template x-for="(imgUrl, index) in storefrontImages">
                                 <div class="relative min-w-[200px] h-[150px] bg-cardDark rounded-lg border border-gray-700 overflow-hidden shrink-0 snap-center group/store">
@@ -507,12 +553,22 @@
             
             <div class="space-y-4 text-xs" x-if="editingProduct">
                 <div>
-                    <label class="block text-gray-400 mb-1">ลิงก์รูปภาพสินค้า (Google Drive หรือ ลิงก์ทั่วไป)</label>
+                    <label class="block text-gray-400 mb-1">ลิงก์รูปภาพสินค้า</label>
                     <input type="text" x-model="editingProduct.image" placeholder="วางลิงก์ที่นี่..." class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-primaryBlue">
                 </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div class="col-span-2">
+                        <label class="block text-gray-400 mb-1">ชื่อสินค้า</label>
+                        <input type="text" x-model="editingProduct.name" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">ประเภท</label>
+                        <input type="text" x-model="editingProduct.type" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none">
+                    </div>
+                </div>
                 <div>
-                    <label class="block text-gray-400 mb-1">ชื่อสินค้า</label>
-                    <input type="text" x-model="editingProduct.name" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none">
+                    <label class="block text-gray-400 mb-1 text-orange-400"><i class="fa-solid fa-bag-shopping mr-1"></i> ลิงก์สั่งซื้อ (Shopee/Lazada)</label>
+                    <input type="text" x-model="editingProduct.shopeeLink" placeholder="https://shopee.co.th/..." class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-orange-500">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -593,6 +649,18 @@
         </div>
     </div>
 
+    <div x-show="showTireSizeModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" x-transition style="display: none;">
+        <div @click.outside="showTireSizeModal = false" class="bg-panelDark border border-gray-800 w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl relative">
+            <div class="flex justify-between items-center p-4 border-b border-gray-800 bg-bgDark">
+                <h3 class="text-sm font-bold text-white"><i class="fa-solid fa-circle-info text-primaryBlue mr-2"></i>วิธีดูขนาดยางรถจักรยาน</h3>
+                <button @click="showTireSizeModal = false" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="w-full bg-cardDark flex items-center justify-center p-4 h-[60vh]">
+                <img src="https://drive.google.com/thumbnail?id=1Ueyg2TRDg-HoyzaOTZdjYm0pqA1n4UtR&sz=w1500" class="w-full h-full object-contain">
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('appData', () => ({
@@ -608,21 +676,24 @@
                 // รูปภาพ
                 heroBannerUrl: 'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&q=80',
                 mapImage: '', 
+                promoImage: '', // รูป 1:1 แบบใหญ่หน้าแรก
                 storefrontImages: ['', '', '', '', ''], 
+                
                 showImageModal: false,
                 imageTargetType: '', 
                 imageTargetIndex: null, 
                 tempImageUrl: '',
                 imageModalTitle: '',
+                showTireSizeModal: false,
                 
                 // สต๊อก
                 products: [
-                    { id: 1, name: 'ยางนอก WT 700x25C', price: 590, cost: 350, stock: 12, type: 'ยางนอก', image: '' },
-                    { id: 2, name: 'โซ่ Shimano CN-HG601', price: 690, cost: 420, stock: 3, type: 'โซ่', image: '' },
-                    { id: 3, name: 'เฟือง Shimano CS-M5100', price: 1290, cost: 850, stock: 15, type: 'เฟือง', image: '' },
-                    { id: 4, name: 'ตีนผี Shimano MT200', price: 850, cost: 500, stock: 2, type: 'ตีนผี', image: '' },
-                    { id: 5, name: 'จาน Shimano FC-MT210', price: 1150, cost: 700, stock: 8, type: 'จาน', image: '' },
-                    { id: 6, name: 'ยางในยางนอกขอบ 29', price: 180, cost: 90, stock: 1, type: 'ยางใน', image: '' }
+                    { id: 1, name: 'ยางนอก WT 700x25C', price: 590, cost: 350, stock: 12, type: 'ยางนอก', image: '', shopeeLink: '' },
+                    { id: 2, name: 'โซ่ Shimano CN-HG601', price: 690, cost: 420, stock: 3, type: 'โซ่', image: '', shopeeLink: '' },
+                    { id: 3, name: 'เฟือง Shimano CS-M5100', price: 1290, cost: 850, stock: 15, type: 'เฟือง', image: '', shopeeLink: '' },
+                    { id: 4, name: 'ตีนผี Shimano MT200', price: 850, cost: 500, stock: 2, type: 'ตีนผี', image: '', shopeeLink: '' },
+                    { id: 5, name: 'จาน Shimano FC-MT210', price: 1150, cost: 700, stock: 8, type: 'จาน', image: '', shopeeLink: '' },
+                    { id: 6, name: 'ยางในยางนอกขอบ 29', price: 180, cost: 90, stock: 1, type: 'ยางใน', image: '', shopeeLink: '' }
                 ],
                 editingProduct: null,
 
@@ -641,6 +712,7 @@
                         const parsed = JSON.parse(savedData);
                         if (parsed.heroBannerUrl) this.heroBannerUrl = parsed.heroBannerUrl;
                         if (parsed.mapImage !== undefined) this.mapImage = parsed.mapImage;
+                        if (parsed.promoImage !== undefined) this.promoImage = parsed.promoImage;
                         if (parsed.storefrontImages) this.storefrontImages = parsed.storefrontImages;
                         if (parsed.products) this.products = parsed.products;
                         if (parsed.repairQueue) this.repairQueue = parsed.repairQueue;
@@ -651,6 +723,7 @@
                     const dataToSave = {
                         heroBannerUrl: this.heroBannerUrl,
                         mapImage: this.mapImage,
+                        promoImage: this.promoImage,
                         storefrontImages: this.storefrontImages,
                         products: this.products,
                         repairQueue: this.repairQueue
@@ -689,6 +762,9 @@
                     if(this.editingProduct.image) {
                         this.editingProduct.image = this.parseDriveLink(this.editingProduct.image);
                     }
+                    // เช็คว่ามี shopeeLink ไหม ถ้าไม่มีให้เป็นค่าว่าง
+                    if(!this.editingProduct.shopeeLink) this.editingProduct.shopeeLink = '';
+                    
                     let index = this.products.findIndex(p => p.id === this.editingProduct.id);
                     if(index !== -1) {
                         this.products[index] = this.editingProduct;
@@ -706,6 +782,9 @@
                     if(type === 'banner') {
                         this.imageModalTitle = '(แบนเนอร์หลัก)';
                         this.tempImageUrl = this.heroBannerUrl;
+                    } else if(type === 'promo') {
+                        this.imageModalTitle = '(รูปโปรโมชั่น 1:1)';
+                        this.tempImageUrl = this.promoImage;
                     } else if(type === 'map') {
                         this.imageModalTitle = '(แผนที่ 1:1)';
                         this.tempImageUrl = this.mapImage;
@@ -719,6 +798,8 @@
                     const finalUrl = this.parseDriveLink(this.tempImageUrl);
                     if(this.imageTargetType === 'banner') {
                         this.heroBannerUrl = finalUrl;
+                    } else if(this.imageTargetType === 'promo') {
+                        this.promoImage = finalUrl;
                     } else if(this.imageTargetType === 'map') {
                         this.mapImage = finalUrl;
                     } else if(this.imageTargetType === 'storefront' && this.imageTargetIndex !== null) {
@@ -730,7 +811,6 @@
 
                 // ระบบคิวซ่อม
                 openAddRepairModal() {
-                    // เซ็ตวันที่ปัจจุบันเป็นค่าเริ่มต้น
                     const today = new Date().toISOString().split('T')[0];
                     this.tempRepair = { id: Date.now(), name: '', phone: '', issue: '', type: 'ฝากรถ', date: today, status: 1 };
                     this.showRepairModal = true;
@@ -741,7 +821,7 @@
                         alert('กรุณากรอกชื่อและอาการให้ครบถ้วน');
                         return;
                     }
-                    this.repairQueue.unshift({...this.tempRepair}); // เพิ่มคิวล่าสุดไว้บนสุด
+                    this.repairQueue.unshift({...this.tempRepair});
                     this.showRepairModal = false;
                     this.saveToStorage();
                 },
