@@ -59,13 +59,19 @@
                 <p class="text-xs mt-1 text-gray-400">อะไหล่จักรยานครบครัน ซ่อมไว ใส่ใจทุกคัน</p>
             </div>
 
-            <nav class="flex-1 px-3 space-y-1 mt-2">
+            <nav class="flex-1 px-3 space-y-1 mt-2 overflow-y-auto hide-scroll">
                 <button @click="currentTab = 'home'" :class="currentTab === 'home' ? 'bg-primaryBlue text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition">
                     <i class="fa-solid fa-house w-5"></i> หน้าแรก
                 </button>
                 <button @click="currentTab = 'products'" :class="currentTab === 'products' ? 'bg-primaryBlue text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition">
                     <i class="fa-solid fa-cart-shopping w-5"></i> สินค้าทั้งหมด
                 </button>
+                
+                <button @click="currentTab = 'repair'" :class="currentTab === 'repair' ? 'bg-primaryBlue text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition relative">
+                    <i class="fa-solid fa-screwdriver-wrench w-5"></i> ซ่อมจักรยาน
+                    <span class="ml-auto bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="activeRepairCount" x-show="activeRepairCount > 0"></span>
+                </button>
+
                 <button x-show="isAdmin" @click="currentTab = 'stock'" :class="currentTab === 'stock' ? 'bg-primaryBlue text-white' : 'text-gray-400 hover:bg-gray-800/50 hover:text-white'" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition">
                     <i class="fa-solid fa-box w-5"></i> สต๊อกสินค้า <span class="ml-auto bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full" x-text="lowStockCount" x-show="lowStockCount > 0"></span>
                 </button>
@@ -131,18 +137,16 @@
 
             <div class="flex-1 overflow-y-auto p-6 space-y-6 relative">
                 
-                <div x-show="currentTab === 'home'" class="space-y-6" x-transition.opacity>
+                <div x-show="currentTab === 'home'" class="space-y-6" x-transition.opacity style="display: none;">
                     
                     <div class="relative w-full h-44 rounded-xl overflow-hidden bg-gradient-to-r from-blue-950 to-slate-900 flex items-center px-8 border border-blue-900/30 group">
                         <div class="absolute inset-0 bg-cover bg-center opacity-40 transition-all duration-500" 
                              :style="`background-image: url('${heroBannerUrl}')`"></div>
                         <div class="absolute inset-0 bg-gradient-to-r from-bgDark via-bgDark/80 to-transparent"></div>
-                        
                         <button x-show="isAdmin" @click="openImageModal('banner')" 
                                 class="absolute top-4 right-4 z-20 bg-black/60 hover:bg-primaryBlue text-white px-3 py-2 rounded-lg backdrop-blur-sm transition border border-gray-600 hover:border-primaryBlue text-xs font-medium flex items-center gap-2 shadow-lg opacity-0 group-hover:opacity-100">
                             <i class="fa-regular fa-image"></i> เปลี่ยนรูปแบนเนอร์
                         </button>
-
                         <div class="relative z-10 w-full flex justify-between items-center">
                             <div>
                                 <h1 class="text-4xl font-black italic tracking-tight"><span class="text-white">BIKE FOR</span> <span class="text-primaryBlue">YOU</span></h1>
@@ -166,18 +170,18 @@
                                 <p class="text-lg font-bold text-red-400" x-text="lowStockCount + ' รายการ'"></p>
                             </div>
                         </div>
-                        <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4">
+                        <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4 cursor-pointer hover:bg-gray-800/50 transition" @click="currentTab = 'repair'">
                             <div class="w-10 h-10 rounded-lg bg-yellow-600/20 text-yellow-400 flex items-center justify-center text-lg"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                             <div>
-                                <p class="text-gray-400 text-[11px]">3. รายการซ่อม</p>
-                                <p class="text-lg font-bold">12 คัน</p>
+                                <p class="text-gray-400 text-[11px]">3. กำลังซ่อม</p>
+                                <p class="text-lg font-bold text-yellow-400" x-text="activeRepairCount + ' คัน'"></p>
                             </div>
                         </div>
-                        <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4">
+                        <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex items-center gap-4 cursor-pointer hover:bg-gray-800/50 transition" @click="currentTab = 'repair'">
                             <div class="w-10 h-10 rounded-lg bg-green-600/20 text-green-400 flex items-center justify-center text-lg"><i class="fa-solid fa-circle-check"></i></div>
                             <div>
                                 <p class="text-gray-400 text-[11px]">4. ซ่อมเสร็จแล้ว</p>
-                                <p class="text-lg font-bold text-green-400">8 คัน</p>
+                                <p class="text-lg font-bold text-green-400" x-text="doneRepairCount + ' คัน'"></p>
                             </div>
                         </div>
                     </div>
@@ -202,7 +206,7 @@
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                                 <template x-for="p in products.slice(0, 5)">
                                     <div class="bg-cardDark p-3 rounded-lg flex flex-col border border-gray-800 hover:border-gray-700 transition">
-                                        <div class="w-full h-24 bg-gray-900 rounded mb-2 overflow-hidden flex items-center justify-center relative">
+                                        <div class="w-full aspect-square bg-gray-900 rounded mb-2 overflow-hidden flex items-center justify-center relative">
                                             <template x-if="p.image">
                                                 <img :src="p.image" class="w-full h-full object-cover">
                                             </template>
@@ -243,7 +247,7 @@
                         <template x-for="p in products.filter(prod => prod.name.toLowerCase().includes(searchQuery.toLowerCase()))">
                             <div class="bg-panelDark p-4 rounded-xl border border-gray-800 flex flex-col justify-between hover:border-gray-600 transition">
                                 <div>
-                                    <div class="w-full h-32 bg-cardDark rounded-lg flex items-center justify-center overflow-hidden mb-3">
+                                    <div class="w-full aspect-square bg-cardDark rounded-lg flex items-center justify-center overflow-hidden mb-3">
                                         <template x-if="p.image">
                                             <img :src="p.image" class="w-full h-full object-cover">
                                         </template>
@@ -265,6 +269,105 @@
                                 </div>
                             </div>
                         </template>
+                    </div>
+                </div>
+
+                <div x-show="currentTab === 'repair'" class="space-y-4" x-transition.opacity style="display: none;">
+                    
+                    <div class="flex justify-between items-center bg-panelDark p-4 rounded-xl border border-gray-800">
+                        <div>
+                            <h2 class="text-base font-bold text-white"><i class="fa-solid fa-screwdriver-wrench text-orange-400 mr-2"></i>ติดตามสถานะงานซ่อม</h2>
+                            <p class="text-[10px] text-gray-400 mt-1">อัปเดตสถานะแบบ Real-time</p>
+                        </div>
+                        
+                        <button x-show="isAdmin" @click="openAddRepairModal()" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-xs font-medium transition shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> เพิ่มคิวลูกค้า
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <template x-for="r in repairQueue" :key="r.id">
+                            <div class="bg-panelDark p-5 rounded-xl border border-gray-800 flex flex-col relative overflow-hidden">
+                                <div x-show="r.status === 4" class="absolute top-2 right-2 text-[10px] font-bold bg-green-900/30 text-green-400 px-2 py-1 rounded border border-green-800">เสร็จสมบูรณ์</div>
+                                
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-sm font-bold text-gray-100 flex items-center gap-2">
+                                            <i class="fa-regular fa-circle-user text-gray-500"></i> คุณ <span x-text="r.name"></span>
+                                        </h3>
+                                        <p class="text-xs text-gray-400 mt-1">
+                                            <span class="font-medium text-orange-400" x-text="r.issue"></span> 
+                                            <span class="mx-2 opacity-30">|</span> 
+                                            <i class="fa-solid fa-bicycle mr-1"></i> <span x-text="r.type"></span>
+                                        </p>
+                                    </div>
+
+                                    <div x-show="isAdmin" class="text-right text-[10px] text-gray-400 space-y-1">
+                                        <p><i class="fa-solid fa-phone mr-1"></i> <span x-text="r.phone"></span></p>
+                                        <p><i class="fa-regular fa-calendar mr-1"></i> <span x-text="r.date"></span></p>
+                                        <button @click="deleteRepair(r.id)" class="text-red-400 hover:text-red-300 underline mt-1 block w-full text-right">ลบคิวนี้</button>
+                                    </div>
+                                </div>
+
+                                <div class="relative w-full max-w-2xl mx-auto mt-2">
+                                    <div class="flex items-center justify-between relative z-10">
+                                        
+                                        <div class="flex flex-col items-center w-1/4">
+                                            <button @click="if(isAdmin) updateRepairStatus(r.id, 1)" :class="r.status >= 1 ? 'bg-primaryBlue text-white shadow-[0_0_10px_rgba(26,107,255,0.5)] border-primaryBlue' : 'bg-gray-800 text-gray-500 border-gray-700'" class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border-2 z-10 relative">
+                                                <i class="fa-solid fa-clipboard-list"></i>
+                                            </button>
+                                            <span class="text-[10px] mt-2 font-medium" :class="r.status >= 1 ? 'text-blue-400' : 'text-gray-500'">รอคิว</span>
+                                        </div>
+
+                                        <div class="absolute top-5 left-[12.5%] right-[12.5%] h-0.5 -z-0">
+                                            <div class="w-full h-full bg-gray-800"></div>
+                                            <div class="absolute top-0 left-0 h-full transition-all duration-500" 
+                                                 :class="r.status >= 2 ? 'bg-primaryBlue w-full' : 'bg-primaryBlue w-0'"></div>
+                                        </div>
+
+                                        <div class="flex flex-col items-center w-1/4">
+                                            <button @click="if(isAdmin) updateRepairStatus(r.id, 2)" :class="r.status >= 2 ? 'bg-primaryBlue text-white shadow-[0_0_10px_rgba(26,107,255,0.5)] border-primaryBlue' : 'bg-gray-800 text-gray-500 border-gray-700'" class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border-2 z-10 relative">
+                                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                            </button>
+                                            <span class="text-[10px] mt-2 font-medium" :class="r.status >= 2 ? 'text-blue-400' : 'text-gray-500'">เช็คสภาพรถ</span>
+                                        </div>
+
+                                        <div class="absolute top-5 left-[37.5%] right-[37.5%] h-0.5 -z-0">
+                                            <div class="w-full h-full bg-gray-800"></div>
+                                            <div class="absolute top-0 left-0 h-full transition-all duration-500" 
+                                                 :class="r.status >= 3 ? 'bg-orange-500 w-full' : 'bg-primaryBlue w-0'"></div>
+                                        </div>
+
+                                        <div class="flex flex-col items-center w-1/4">
+                                            <button @click="if(isAdmin) updateRepairStatus(r.id, 3)" :class="r.status >= 3 ? 'bg-orange-500 text-white shadow-[0_0_10px_rgba(249,115,22,0.5)] border-orange-500' : 'bg-gray-800 text-gray-500 border-gray-700'" class="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all border-2 z-10 relative">
+                                                <i class="fa-solid fa-wrench"></i>
+                                            </button>
+                                            <span class="text-[10px] mt-2 font-medium" :class="r.status >= 3 ? 'text-orange-400' : 'text-gray-500'">กำลังซ่อม</span>
+                                        </div>
+
+                                        <div class="absolute top-5 left-[62.5%] right-[12.5%] h-0.5 -z-0">
+                                            <div class="w-full h-full bg-gray-800"></div>
+                                            <div class="absolute top-0 left-0 h-full transition-all duration-500" 
+                                                 :class="r.status >= 4 ? 'bg-green-500 w-full' : 'bg-orange-500 w-0'"></div>
+                                        </div>
+
+                                        <div class="flex flex-col items-center w-1/4">
+                                            <button @click="if(isAdmin) updateRepairStatus(r.id, 4)" :class="r.status >= 4 ? 'bg-green-500 text-white shadow-[0_0_10px_rgba(34,197,94,0.5)] border-green-500' : 'bg-gray-800 text-gray-500 border-gray-700'" class="w-10 h-10 rounded-full flex items-center justify-center text-xl transition-all border-2 z-10 relative">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                            <span class="text-[10px] mt-2 font-medium" :class="r.status >= 4 ? 'text-green-400' : 'text-gray-500'">เสร็จแล้ว</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <p x-show="isAdmin" class="text-[9px] text-center text-gray-500 mt-3">* โหมด Admin: กดที่วงกลมไอคอนเพื่อเปลี่ยนสถานะงานซ่อม</p>
+                                </div>
+                            </div>
+                        </template>
+
+                        <div x-show="repairQueue.length === 0" class="text-center py-10 bg-panelDark rounded-xl border border-gray-800">
+                            <i class="fa-solid fa-clipboard-check text-4xl text-gray-700 mb-3"></i>
+                            <p class="text-gray-400 text-sm">ยังไม่มีคิวงานซ่อมในขณะนี้</p>
+                        </div>
                     </div>
                 </div>
 
@@ -406,14 +509,11 @@
                 <div>
                     <label class="block text-gray-400 mb-1">ลิงก์รูปภาพสินค้า (Google Drive หรือ ลิงก์ทั่วไป)</label>
                     <input type="text" x-model="editingProduct.image" placeholder="วางลิงก์ที่นี่..." class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-primaryBlue">
-                    <p class="text-[10px] text-primaryBlue mt-1">* ระบบจะแปลงลิงก์ Google Drive ให้แสดงผลอัตโนมัติ</p>
                 </div>
-
                 <div>
                     <label class="block text-gray-400 mb-1">ชื่อสินค้า</label>
                     <input type="text" x-model="editingProduct.name" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none">
                 </div>
-                
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-gray-400 mb-1">ต้นทุน (บาท)</label>
@@ -424,7 +524,6 @@
                         <input type="number" x-model.number="editingProduct.price" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none">
                     </div>
                 </div>
-
                 <div class="flex gap-2 pt-4">
                     <button @click="editingProduct = null" class="w-1/2 bg-gray-800 text-gray-300 py-2.5 rounded-lg font-medium transition">ยกเลิก</button>
                     <button @click="saveProduct()" class="w-1/2 bg-green-600 hover:bg-green-500 text-white py-2.5 rounded-lg font-medium transition shadow-lg">บันทึกข้อมูล</button>
@@ -444,12 +543,51 @@
                 <div>
                     <label class="block text-xs text-gray-400 mb-2">วางลิงก์รูปภาพ (Google Drive หรือ ลิงก์รูปทั่วไป)</label>
                     <input type="text" x-model="tempImageUrl" placeholder="https://drive.google.com/file/d/..." class="w-full bg-cardDark border border-gray-700 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-primaryBlue transition">
-                    <p class="text-[10px] text-gray-500 mt-2">* หากใช้ Google Drive อย่าลืมตั้งค่าแชร์เป็น "ทุกคนที่มีลิงก์"</p>
                 </div>
-                
                 <div class="flex gap-2 pt-2">
                     <button type="button" @click="showImageModal = false" class="w-1/2 bg-gray-800 hover:bg-gray-700 text-gray-300 py-2.5 rounded-xl text-xs font-medium transition">ยกเลิก</button>
                     <button type="button" @click="saveImageTarget()" class="w-1/2 bg-primaryBlue hover:bg-blue-600 text-white py-2.5 rounded-xl text-xs font-medium transition">บันทึกรูปภาพ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div x-show="showRepairModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" x-transition style="display: none;">
+        <div class="bg-panelDark border border-gray-800 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+            <h3 class="text-sm font-bold text-white mb-4 border-b border-gray-800 pb-2 flex items-center gap-2">
+                <i class="fa-solid fa-clipboard-user text-orange-400"></i> ลงคิวซ่อมลูกค้าใหม่
+            </h3>
+            
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-gray-400 mb-1">ชื่อลูกค้า (ชื่อเล่น / ชื่อจริง)</label>
+                    <input type="text" x-model="tempRepair.name" placeholder="เช่น พี่สมชาย, น้องเอ" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-orange-500">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1">เบอร์โทรศัพท์</label>
+                    <input type="text" x-model="tempRepair.phone" placeholder="08X-XXX-XXXX" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-orange-500">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1">อาการ / จุดที่ซ่อม</label>
+                    <input type="text" x-model="tempRepair.issue" placeholder="เช่น ปะยางหลัง, ตั้งเกียร์, ล้างรถ" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-orange-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-gray-400 mb-1">ประเภทการรอ</label>
+                        <select x-model="tempRepair.type" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-orange-500">
+                            <option value="ฝากรถ">ฝากรถไว้</option>
+                            <option value="รอรับเลย">รอรับเลย</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-1">วันที่ส่งซ่อม</label>
+                        <input type="date" x-model="tempRepair.date" class="w-full bg-cardDark border border-gray-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-orange-500">
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-4">
+                    <button @click="showRepairModal = false" class="w-1/2 bg-gray-800 text-gray-300 py-2.5 rounded-lg font-medium transition">ยกเลิก</button>
+                    <button @click="saveRepairQueue()" class="w-1/2 bg-orange-600 hover:bg-orange-500 text-white py-2.5 rounded-lg font-medium transition shadow-lg">บันทึกคิวซ่อม</button>
                 </div>
             </div>
         </div>
@@ -467,17 +605,17 @@
                 searchQuery: '',
                 showNotification: false,
                 
-                // รูปภาพต่างๆ
+                // รูปภาพ
                 heroBannerUrl: 'https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&q=80',
                 mapImage: '', 
                 storefrontImages: ['', '', '', '', ''], 
-
                 showImageModal: false,
                 imageTargetType: '', 
                 imageTargetIndex: null, 
                 tempImageUrl: '',
                 imageModalTitle: '',
                 
+                // สต๊อก
                 products: [
                     { id: 1, name: 'ยางนอก WT 700x25C', price: 590, cost: 350, stock: 12, type: 'ยางนอก', image: '' },
                     { id: 2, name: 'โซ่ Shimano CN-HG601', price: 690, cost: 420, stock: 3, type: 'โซ่', image: '' },
@@ -487,12 +625,17 @@
                     { id: 6, name: 'ยางในยางนอกขอบ 29', price: 180, cost: 90, stock: 1, type: 'ยางใน', image: '' }
                 ],
                 editingProduct: null,
+
+                // คิวซ่อมรถ
+                repairQueue: [],
+                showRepairModal: false,
+                tempRepair: { id: '', name: '', phone: '', issue: '', type: 'ฝากรถ', date: '', status: 1 },
                 
                 get lowStockCount() { return this.products.filter(p => p.stock <= 4).length; },
+                get activeRepairCount() { return this.repairQueue.filter(r => r.status < 4).length; },
+                get doneRepairCount() { return this.repairQueue.filter(r => r.status === 4).length; },
                 
-                // ทำงานทันทีตอนโหลดหน้าเว็บ
                 init() {
-                    // โหลดข้อมูลที่เคยบันทึกไว้ใน Local Storage มาแสดง
                     const savedData = localStorage.getItem('bikeForYouData');
                     if (savedData) {
                         const parsed = JSON.parse(savedData);
@@ -500,16 +643,17 @@
                         if (parsed.mapImage !== undefined) this.mapImage = parsed.mapImage;
                         if (parsed.storefrontImages) this.storefrontImages = parsed.storefrontImages;
                         if (parsed.products) this.products = parsed.products;
+                        if (parsed.repairQueue) this.repairQueue = parsed.repairQueue;
                     }
                 },
 
-                // ฟังก์ชันเซฟข้อมูลลง Local Storage ป้องกันการรีเฟรชแล้วหาย
                 saveToStorage() {
                     const dataToSave = {
                         heroBannerUrl: this.heroBannerUrl,
                         mapImage: this.mapImage,
                         storefrontImages: this.storefrontImages,
-                        products: this.products
+                        products: this.products,
+                        repairQueue: this.repairQueue
                     };
                     localStorage.setItem('bikeForYouData', JSON.stringify(dataToSave));
                 },
@@ -526,10 +670,9 @@
                 },
                 logout() {
                     this.isAdmin = false;
-                    this.currentTab = 'home'; // เด้งกลับหน้าโหมดลูกค้าปกติ
+                    this.currentTab = 'home'; 
                 },
                 
-                // ฟังก์ชันแปลงลิงก์ Google Drive เป็นภาพ Thumbnail (ทะลุระบบบล็อกใหม่)
                 parseDriveLink(url) {
                     if(!url) return '';
                     let finalUrl = url;
@@ -542,7 +685,6 @@
                     return finalUrl;
                 },
 
-                // บันทึกสินค้า พร้อมแปลงลิงก์ภาพ และเซฟเข้า Local Storage
                 saveProduct() {
                     if(this.editingProduct.image) {
                         this.editingProduct.image = this.parseDriveLink(this.editingProduct.image);
@@ -552,8 +694,6 @@
                         this.products[index] = this.editingProduct;
                     }
                     this.editingProduct = null;
-                    
-                    // สั่งเซฟข้อมูลหลังจากอัปเดตสต๊อกหรือแก้รูป
                     this.saveToStorage(); 
                 },
 
@@ -575,10 +715,8 @@
                     }
                 },
 
-                // บันทึกรูปลงแบนเนอร์/แผนที่/หน้าร้าน พร้อมเซฟเข้า Local Storage
                 saveImageTarget() {
                     const finalUrl = this.parseDriveLink(this.tempImageUrl);
-                    
                     if(this.imageTargetType === 'banner') {
                         this.heroBannerUrl = finalUrl;
                     } else if(this.imageTargetType === 'map') {
@@ -586,11 +724,41 @@
                     } else if(this.imageTargetType === 'storefront' && this.imageTargetIndex !== null) {
                         this.storefrontImages[this.imageTargetIndex] = finalUrl;
                     }
-                    
                     this.showImageModal = false;
-                    
-                    // สั่งเซฟข้อมูลหลังจากเพิ่มรูปลงหน้าเว็บเสร็จ
                     this.saveToStorage();
+                },
+
+                // ระบบคิวซ่อม
+                openAddRepairModal() {
+                    // เซ็ตวันที่ปัจจุบันเป็นค่าเริ่มต้น
+                    const today = new Date().toISOString().split('T')[0];
+                    this.tempRepair = { id: Date.now(), name: '', phone: '', issue: '', type: 'ฝากรถ', date: today, status: 1 };
+                    this.showRepairModal = true;
+                },
+
+                saveRepairQueue() {
+                    if(this.tempRepair.name === '' || this.tempRepair.issue === '') {
+                        alert('กรุณากรอกชื่อและอาการให้ครบถ้วน');
+                        return;
+                    }
+                    this.repairQueue.unshift({...this.tempRepair}); // เพิ่มคิวล่าสุดไว้บนสุด
+                    this.showRepairModal = false;
+                    this.saveToStorage();
+                },
+
+                updateRepairStatus(id, newStatus) {
+                    const index = this.repairQueue.findIndex(r => r.id === id);
+                    if (index !== -1) {
+                        this.repairQueue[index].status = newStatus;
+                        this.saveToStorage();
+                    }
+                },
+
+                deleteRepair(id) {
+                    if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบคิวซ่อมนี้?')) {
+                        this.repairQueue = this.repairQueue.filter(r => r.id !== id);
+                        this.saveToStorage();
+                    }
                 }
             }));
         });
