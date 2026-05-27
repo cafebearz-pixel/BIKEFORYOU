@@ -12,6 +12,9 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
 <style>
 
 *{
@@ -24,6 +27,7 @@ font-family:'Prompt',sans-serif;
 body{
 background:#EEF4FB;
 overflow-x:hidden;
+color:#10202C;
 }
 
 :root{
@@ -31,7 +35,7 @@ overflow-x:hidden;
 --light:#68B4FE;
 --dark:#10202C;
 --white:#FFFFFF;
---gray:#F4F7FB;
+--gray:#EEF4FB;
 --shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
@@ -50,17 +54,17 @@ z-index:999;
 }
 
 .logo{
-margin-bottom:35px;
+margin-bottom:40px;
 }
 
 .logo h1{
-color:#68B4FE;
 font-size:48px;
-margin-bottom:5px;
+color:#68B4FE;
+margin-bottom:8px;
 }
 
 .logo h2{
-font-size:34px;
+font-size:36px;
 line-height:1.1;
 color:white;
 }
@@ -71,13 +75,12 @@ color:#68B4FE;
 
 .logo p{
 margin-top:15px;
-color:#D6E4F0;
 line-height:1.7;
-font-size:15px;
+color:#DCE7F2;
 }
 
 .menu{
-margin-top:30px;
+margin-top:25px;
 }
 
 .menu a{
@@ -89,42 +92,36 @@ border-radius:18px;
 margin-bottom:12px;
 text-decoration:none;
 color:white;
-font-size:17px;
 transition:.3s;
+font-size:17px;
 }
 
-.menu a:hover,
-.menu a.active{
+.menu a.active,
+.menu a:hover{
 background:linear-gradient(90deg,#004CA9,#0d6efd);
-transform:translateX(6px);
+transform:translateX(5px);
 }
 
-.menu i{
-font-size:18px;
-width:22px;
-}
-
-.side-card{
+.side-banner{
 margin-top:35px;
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
+background:linear-gradient(180deg,#0d6efd22,#68B4FE11);
 border:1px solid rgba(255,255,255,.08);
 padding:25px;
-border-radius:25px;
+border-radius:28px;
 color:white;
 }
 
-.side-card h3{
-font-size:26px;
+.side-banner h3{
+font-size:28px;
 margin-bottom:12px;
 }
 
-.side-card p{
+.side-banner p{
 line-height:1.8;
-color:#D6E4F0;
+color:#DCE7F2;
 }
 
-.side-card button{
+.side-banner button{
 margin-top:20px;
 width:100%;
 padding:15px;
@@ -173,8 +170,8 @@ font-size:16px;
 position:absolute;
 left:20px;
 top:19px;
+color:#888;
 font-size:18px;
-color:#777;
 }
 
 .top-right{
@@ -183,7 +180,7 @@ align-items:center;
 gap:18px;
 }
 
-.notification{
+.notify{
 width:50px;
 height:50px;
 background:white;
@@ -195,10 +192,10 @@ box-shadow:var(--shadow);
 position:relative;
 }
 
-.notification span{
+.notify span{
 position:absolute;
 top:10px;
-right:12px;
+right:10px;
 width:10px;
 height:10px;
 background:red;
@@ -207,9 +204,9 @@ border-radius:50%;
 
 .admin{
 padding:14px 24px;
-background:linear-gradient(90deg,#10202C,#08131d);
-color:white;
 border-radius:18px;
+background:linear-gradient(90deg,#08131d,#10202C);
+color:white;
 display:flex;
 align-items:center;
 gap:10px;
@@ -222,8 +219,8 @@ font-weight:600;
 
 .hero{
 background:linear-gradient(120deg,#004CA9,#0d6efd,#68B4FE);
+padding:45px;
 border-radius:35px;
-padding:40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -235,23 +232,23 @@ margin-bottom:25px;
 .hero::before{
 content:'';
 position:absolute;
-width:300px;
-height:300px;
-background:rgba(255,255,255,.08);
+width:350px;
+height:350px;
 border-radius:50%;
+background:rgba(255,255,255,.08);
 top:-120px;
 right:-80px;
 }
 
 .hero-text{
-color:white;
 z-index:2;
+color:white;
 }
 
 .hero-text h1{
-font-size:50px;
-line-height:1.1;
+font-size:58px;
 margin-bottom:15px;
+line-height:1;
 }
 
 .hero-text p{
@@ -275,7 +272,6 @@ cursor:pointer;
 .hero img{
 width:320px;
 z-index:2;
-filter:drop-shadow(0 20px 25px rgba(0,0,0,.2));
 }
 
 /* SUMMARY */
@@ -289,8 +285,8 @@ margin-bottom:25px;
 
 .card{
 background:white;
-border-radius:28px;
 padding:25px;
+border-radius:28px;
 box-shadow:var(--shadow);
 transition:.3s;
 }
@@ -302,27 +298,26 @@ transform:translateY(-5px);
 .card i{
 width:60px;
 height:60px;
-background:#EEF4FF;
-color:#004CA9;
 border-radius:18px;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
+background:#EEF4FF;
+color:#004CA9;
 font-size:24px;
 margin-bottom:15px;
 }
 
 .card h2{
-font-size:40px;
-color:#10202C;
+font-size:42px;
+margin-bottom:5px;
 }
 
 .card p{
-margin-top:5px;
 color:#666;
 }
 
-/* BEST SELLER */
+/* SECTION */
 
 .section{
 background:white;
@@ -340,32 +335,25 @@ margin-bottom:25px;
 }
 
 .section-head h2{
-font-size:30px;
-color:#10202C;
+font-size:32px;
 }
 
-.slider{
-display:flex;
-gap:20px;
-overflow-x:auto;
-scrollbar-width:none;
-}
+/* PRODUCT SLIDER */
 
-.slider::-webkit-scrollbar{
-display:none;
+.swiper{
+padding-bottom:20px;
 }
 
 .product{
-min-width:250px;
 background:#F8FBFF;
+border:1px solid #EAF2FF;
 padding:20px;
 border-radius:28px;
 transition:.3s;
-border:1px solid #EAF2FF;
 }
 
 .product:hover{
-transform:translateY(-6px);
+transform:translateY(-5px);
 box-shadow:var(--shadow);
 }
 
@@ -377,7 +365,7 @@ margin-bottom:15px;
 }
 
 .product h3{
-font-size:22px;
+font-size:24px;
 margin-bottom:8px;
 }
 
@@ -387,91 +375,37 @@ margin-bottom:12px;
 }
 
 .price{
-font-size:30px;
+font-size:32px;
 font-weight:700;
 color:#004CA9;
 }
 
-/* STOCK */
+/* QUICK */
 
-.stock-search{
-margin-bottom:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
+.quick{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:18px;
 }
 
-.stock-search input{
-padding:14px 18px;
-border:none;
-border-radius:15px;
-background:#F4F7FB;
-width:320px;
-outline:none;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:#F4F7FB;
-padding:18px;
-text-align:left;
-color:#555;
-}
-
-td{
-padding:18px;
-border-bottom:1px solid #eee;
-}
-
-.status{
-padding:8px 14px;
-border-radius:30px;
-font-size:14px;
-font-weight:600;
-}
-
-.normal{
-background:#E2F8EA;
-color:#19984F;
-}
-
-.low{
-background:#FFF1D8;
-color:#D99100;
-}
-
-.out{
-background:#FFE0E0;
-color:#E53935;
-}
-
-.action{
-display:flex;
-gap:10px;
-}
-
-.btn{
-width:40px;
-height:40px;
-border:none;
-border-radius:12px;
-font-size:18px;
+.quick-box{
+background:#F8FBFF;
+padding:25px;
+border-radius:25px;
+text-align:center;
+transition:.3s;
 cursor:pointer;
-font-weight:700;
 }
 
-.plus{
-background:#E8F2FF;
-color:#004CA9;
+.quick-box:hover{
+background:#004CA9;
+color:white;
+transform:translateY(-5px);
 }
 
-.minus{
-background:#FFE8E8;
-color:#E53935;
+.quick-box i{
+font-size:28px;
+margin-bottom:15px;
 }
 
 /* CONTACT */
@@ -487,15 +421,15 @@ overflow:hidden;
 }
 
 .contact h2{
+font-size:38px;
 color:white;
-font-size:34px;
 margin-bottom:20px;
 }
 
 .contact p{
-color:#D6E4F0;
 font-size:18px;
 margin-bottom:15px;
+color:#DCE7F2;
 display:flex;
 align-items:center;
 gap:12px;
@@ -509,16 +443,16 @@ color:#68B4FE;
 width:280px;
 }
 
-/* LOGIN MODAL */
+/* LOGIN */
 
 .modal{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.55);
+background:rgba(0,0,0,.5);
 display:none;
 justify-content:center;
 align-items:center;
-z-index:9999;
+z-index:99999;
 }
 
 .modal-box{
@@ -526,7 +460,6 @@ background:white;
 width:380px;
 padding:35px;
 border-radius:30px;
-box-shadow:0 20px 50px rgba(0,0,0,.2);
 text-align:center;
 }
 
@@ -536,8 +469,8 @@ margin-bottom:10px;
 }
 
 .modal-box p{
-color:#666;
 margin-bottom:25px;
+color:#666;
 }
 
 .modal-box input{
@@ -558,52 +491,96 @@ border:none;
 border-radius:16px;
 background:linear-gradient(90deg,#004CA9,#68B4FE);
 color:white;
-font-size:17px;
+font-size:16px;
 font-weight:700;
 cursor:pointer;
 }
 
 /* MOBILE */
 
-@media(max-width:1200px){
+.mobile-menu{
+display:none;
+}
+
+@media(max-width:1100px){
 
 .summary{
 grid-template-columns:repeat(2,1fr);
 }
 
+.quick{
+grid-template-columns:repeat(3,1fr);
 }
 
-@media(max-width:900px){
+}
+
+@media(max-width:768px){
 
 .sidebar{
-display:none;
+left:-100%;
+transition:.4s;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.mobile-menu{
+display:flex;
+width:50px;
+height:50px;
+background:white;
+border-radius:16px;
+align-items:center;
+justify-content:center;
+box-shadow:var(--shadow);
+cursor:pointer;
 }
 
 .main{
 margin-left:0;
+padding:20px;
 }
 
-.summary{
-grid-template-columns:1fr;
-}
-
-.hero{
-flex-direction:column;
-text-align:center;
-}
-
-.hero img{
-margin-top:20px;
+.topbar{
+gap:15px;
+flex-wrap:wrap;
 }
 
 .search{
 width:100%;
 }
 
-.topbar{
+.hero{
 flex-direction:column;
-gap:20px;
-align-items:flex-start;
+text-align:center;
+padding:35px 25px;
+}
+
+.hero-text h1{
+font-size:42px;
+}
+
+.hero img{
+margin-top:20px;
+width:220px;
+}
+
+.summary{
+grid-template-columns:1fr;
+}
+
+.quick{
+grid-template-columns:repeat(2,1fr);
+}
+
+.contact{
+flex-direction:column;
+text-align:center;
+}
+
+.contact img{
+margin-top:20px;
 }
 
 }
@@ -613,9 +590,9 @@ align-items:flex-start;
 
 <body>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN -->
 
-<div class="modal" id="loginModal">
+<div class="modal" id="modal">
 
 <div class="modal-box">
 
@@ -623,7 +600,8 @@ align-items:flex-start;
 
 <p>กรอกรหัสเพื่อเข้าสู่โหมดแอดมิน</p>
 
-<input type="password" id="adminPass"
+<input type="password"
+id="password"
 placeholder="Password">
 
 <button onclick="loginAdmin()">
@@ -636,7 +614,7 @@ placeholder="Password">
 
 <!-- SIDEBAR -->
 
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
 
 <div class="logo">
 
@@ -667,9 +645,9 @@ BIKE <span>FOR YOU</span>
 สินค้าทั้งหมด
 </a>
 
-<a href="#" id="stockMenu" style="display:none;">
+<a href="#" id="stockBtn" style="display:none;">
 <i class="fa-solid fa-layer-group"></i>
-สต็อคสินค้า
+สต๊อคสินค้า
 </a>
 
 <a href="#">
@@ -677,11 +655,16 @@ BIKE <span>FOR YOU</span>
 แผนที่
 </a>
 
+<a href="#">
+<i class="fa-solid fa-right-from-bracket"></i>
+ออกจากระบบ
+</a>
+
 </div>
 
-<div class="side-card">
+<div class="side-banner">
 
-<h3>บริการครบวงจร</h3>
+<h3>ร้านจักรยานครบวงจร</h3>
 
 <p>
 อะไหล่จักรยานคุณภาพ
@@ -704,24 +687,34 @@ BIKE <span>FOR YOU</span>
 
 <div class="topbar">
 
+<div class="mobile-menu"
+onclick="toggleSidebar()">
+
+<i class="fa-solid fa-bars"></i>
+
+</div>
+
 <div class="search">
 
 <i class="fa-solid fa-magnifying-glass"></i>
 
 <input type="text"
-placeholder="ค้นหาสินค้า..."
-id="searchInput">
+placeholder="ค้นหาสินค้า, รหัสสินค้า...">
 
 </div>
 
 <div class="top-right">
 
-<div class="notification">
+<div class="notify">
+
 <i class="fa-regular fa-bell"></i>
+
 <span></span>
+
 </div>
 
-<div class="admin" onclick="openLogin()">
+<div class="admin"
+onclick="openModal()">
 
 <i class="fa-solid fa-shield-halved"></i>
 
@@ -739,9 +732,7 @@ Admin
 
 <div class="hero-text">
 
-<h1>
-BIKE FOR YOU
-</h1>
+<h1>BIKE FOR YOU</h1>
 
 <p>
 ร้านไบค์ฟอร์ยูจำหน่ายอะไหล่
@@ -763,44 +754,62 @@ BIKE FOR YOU
 <div class="summary">
 
 <div class="card">
+
 <i class="fa-solid fa-box"></i>
+
 <h2>125</h2>
+
 <p>สินค้าทั้งหมด</p>
+
 </div>
 
 <div class="card">
+
 <i class="fa-solid fa-triangle-exclamation"></i>
+
 <h2>12</h2>
-<p>ใกล้หมดสต็อค</p>
+
+<p>ใกล้หมดสต๊อค</p>
+
 </div>
 
 <div class="card">
+
 <i class="fa-solid fa-circle-xmark"></i>
+
 <h2>3</h2>
-<p>หมดสต็อค</p>
+
+<p>หมดสต๊อค</p>
+
 </div>
 
 <div class="card">
+
 <i class="fa-solid fa-wallet"></i>
+
 <h2>฿86K</h2>
+
 <p>มูลค่าสินค้า</p>
-</div>
 
 </div>
 
-<!-- PRODUCT -->
+</div>
+
+<!-- BEST SELL -->
 
 <div class="section">
 
 <div class="section-head">
 
-<h2>
-🔥 สินค้าขายดี
-</h2>
+<h2>🔥 สินค้าขายดี</h2>
 
 </div>
 
-<div class="slider">
+<div class="swiper mySwiper">
+
+<div class="swiper-wrapper">
+
+<div class="swiper-slide">
 
 <div class="product">
 
@@ -816,6 +825,10 @@ BIKE FOR YOU
 
 </div>
 
+</div>
+
+<div class="swiper-slide">
+
 <div class="product">
 
 <img src="https://cdn-icons-png.flaticon.com/512/2972/2972176.png">
@@ -829,6 +842,10 @@ BIKE FOR YOU
 </div>
 
 </div>
+
+</div>
+
+<div class="swiper-slide">
 
 <div class="product">
 
@@ -844,11 +861,15 @@ BIKE FOR YOU
 
 </div>
 
+</div>
+
+<div class="swiper-slide">
+
 <div class="product">
 
 <img src="https://cdn-icons-png.flaticon.com/512/3063/3063822.png">
 
-<h3>ยางใน</h3>
+<h3>ยางใน AV</h3>
 
 <p>ขายแล้ว 20 ชิ้น</p>
 
@@ -862,124 +883,53 @@ BIKE FOR YOU
 
 </div>
 
-<!-- STOCK -->
+</div>
+
+</div>
+
+<!-- QUICK -->
 
 <div class="section">
 
 <div class="section-head">
-<h2>📦 สต็อคสินค้า</h2>
-</div>
 
-<div class="stock-search">
-
-<input type="text"
-placeholder="ค้นหาสต็อคสินค้า...">
+<h2>⚡ เมนูด่วน</h2>
 
 </div>
 
-<table>
+<div class="quick">
 
-<thead>
-
-<tr>
-<th>สินค้า</th>
-<th>จำนวน</th>
-<th>เพิ่ม / ลด</th>
-<th>คงเหลือ</th>
-<th>สถานะ</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td>โซ่ Shimano</td>
-
-<td>5</td>
-
-<td>
-
-<div class="action">
-
-<button class="btn plus">+</button>
-
-<button class="btn minus">-</button>
-
+<div class="quick-box">
+<i class="fa-solid fa-box"></i>
+<p>สินค้าทั้งหมด</p>
 </div>
 
-</td>
-
-<td>3</td>
-
-<td>
-<span class="status low">
-ใกล้หมด
-</span>
-</td>
-
-</tr>
-
-<tr>
-
-<td>ยาง CST</td>
-
-<td>15</td>
-
-<td>
-
-<div class="action">
-
-<button class="btn plus">+</button>
-
-<button class="btn minus">-</button>
-
+<div class="quick-box">
+<i class="fa-solid fa-fire"></i>
+<p>สินค้าขายดี</p>
 </div>
 
-</td>
-
-<td>12</td>
-
-<td>
-<span class="status normal">
-ปกติ
-</span>
-</td>
-
-</tr>
-
-<tr>
-
-<td>ผ้าเบรก</td>
-
-<td>2</td>
-
-<td>
-
-<div class="action">
-
-<button class="btn plus">+</button>
-
-<button class="btn minus">-</button>
-
+<div class="quick-box">
+<i class="fa-solid fa-plus"></i>
+<p>เพิ่มสินค้า</p>
 </div>
 
-</td>
+<div class="quick-box">
+<i class="fa-solid fa-bell"></i>
+<p>แจ้งเตือนสินค้า</p>
+</div>
 
-<td>0</td>
+<div class="quick-box">
+<i class="fa-solid fa-clock-rotate-left"></i>
+<p>ประวัติ</p>
+</div>
 
-<td>
-<span class="status out">
-หมดสต็อค
-</span>
-</td>
+<div class="quick-box">
+<i class="fa-solid fa-phone"></i>
+<p>ติดต่อร้าน</p>
+</div>
 
-</tr>
-
-</tbody>
-
-</table>
+</div>
 
 </div>
 
@@ -1014,24 +964,44 @@ e22pap
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <script>
 
-function openLogin(){
-document.getElementById('loginModal').style.display='flex';
+var swiper = new Swiper(".mySwiper", {
+slidesPerView:1.2,
+spaceBetween:20,
+loop:true,
+autoplay:{
+delay:2500,
+disableOnInteraction:false,
+},
+breakpoints:{
+768:{
+slidesPerView:2,
+},
+1200:{
+slidesPerView:4,
+}
+}
+});
+
+function openModal(){
+document.getElementById('modal').style.display='flex';
 }
 
 function loginAdmin(){
 
-const pass =
-document.getElementById('adminPass').value;
+const password =
+document.getElementById('password').value;
 
-if(pass === '112506'){
+if(password === '112506'){
 
 alert('เข้าสู่โหมด Admin สำเร็จ');
 
-document.getElementById('stockMenu').style.display='flex';
+document.getElementById('stockBtn').style.display='flex';
 
-document.getElementById('loginModal').style.display='none';
+document.getElementById('modal').style.display='none';
 
 }else{
 
@@ -1041,10 +1011,17 @@ alert('รหัสผ่านไม่ถูกต้อง');
 
 }
 
+function toggleSidebar(){
+
+document.getElementById('sidebar')
+.classList.toggle('show');
+
+}
+
 window.onclick = function(e){
 
 const modal =
-document.getElementById('loginModal');
+document.getElementById('modal');
 
 if(e.target == modal){
 
